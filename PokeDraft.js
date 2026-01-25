@@ -48,13 +48,41 @@ export class Player {
 }
 
 export class DraftOrganizer {
-  constructor(props = {budget: number, numberOfPokemon: number, players: [], period: number}) {
+  constructor(props = {budget: number, numberOfPokemon: number, period: number}) {
     this.budget = props.budget;
     this.numberOfPokemon = props.numberOfPokemon;
     this.period = props.period;
-    //this.players = constructPlayers(props.players);
-    
+    //Final player list that contains player objects
+    this.players = []
+    //String list of players who are added via command
+    this.prospectivePlayers = []
+    this.isRunning = false;
+  }
+
+  static lockAndRunDraft() {
+    this.isRunning = true;
+    this.players = this.constructPlayers(this.prospectivePlayers)
+    console.log("run draft");
+    //Todo: turn on when more infrastrcture ready
     //this.runDraft();
+  }
+
+  static addPlayer(userName) {
+    if (this.isRunning) {
+      return;
+    }
+    this.prospectivePlayers.add(userName);
+  }
+
+  static removePlayer(userName) {
+    if (this.isRunning) {
+      return;
+    }
+    for (let i; i < this.prospectivePlayers.length; i++) {
+      if (this.prospectivePlayers[i] == userName) {
+        this.prospectivePlayers = this.prospectivePlayers.toSpliced(i);
+      }
+    }
   }
 
   static constructPlayers(players){
@@ -100,16 +128,21 @@ export class DraftOrganizer {
     }
   }
 
-  static awaitPlayer(){
+  static awaitPlayer(player){
     //use discord hook to get input from player
     //const pokemon 
   }
 
   
-  static notify(){
+  static notify(player){
 
     //use discord hook to message player its their turn
     //continue;
+
+  }
+
+  //Announce to the server something
+  static announce(message){
 
   }
 

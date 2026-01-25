@@ -103,7 +103,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       });
     }
 
-    if (name === 'start-draft' && id) {
+    if (name === 'init-draft' && id) {
 
       const teamSize = req.body.data.options.find(
         opt => opt.name === "team-size"
@@ -127,6 +127,25 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
             }
           ]
         },
+      });
+    }
+
+    if (name === 'start-draft' && id) {
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+          components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              // Fetches a random emoji to send from a helper function
+              content: `Draft will begin wih budget ${activeDraftOrg.budget} and team size ${activeDraftOrg.numberOfPokemon} and ${activeDraftOrg.prospectivePlayers.length} players.`
+            }
+          ]
+        },
+      }).then(() => {
+        activeDraftOrg.lockRunAndDraft();
       });
     }
 

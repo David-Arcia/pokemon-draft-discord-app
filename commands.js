@@ -44,10 +44,10 @@ const CHALLENGE_COMMAND = {
   contexts: [0, 2],
 };
 
-// Command for starting a draft
-const DRAFT_COMMAND = {
-  name: 'start-draft',
-  description: 'Commands for managing a Pokémon draft',
+// Command for generating a new draft
+const INIT_DRAFT_COMMAND = {
+  name: 'init-draft',
+  description: 'Begin a new draft instance',
   type: 1,
   options: [
 
@@ -69,6 +69,13 @@ const DRAFT_COMMAND = {
   ]
 }
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, DRAFT_COMMAND];
+// Command for starting the existing draft
+const START_DRAFT_COMMAND = {
+  name: 'start-draft',
+  description: 'Begin drafting with current draft instance',
+  type: 1,
+}
+
+const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, INIT_DRAFT_COMMAND, START_DRAFT_COMMAND];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
