@@ -44,6 +44,31 @@ const CHALLENGE_COMMAND = {
   contexts: [0, 2],
 };
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND];
+// Command for starting a draft
+const DRAFT_COMMAND = {
+  name: 'start-draft',
+  description: 'Commands for managing a Pokémon draft',
+  type: 1,
+  options: [
+
+    {
+      type: 4,
+      name: "team-size",
+      description: "Number of pokemon each player drafts",
+      required: true,
+      min_value: 1,
+      max_value: 30
+    },
+    {
+      type: 4,
+      name: "budget",
+      description: "Total budget per player",
+      required: true,
+      min_value: 1
+    },
+  ]
+}
+
+const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, DRAFT_COMMAND];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);

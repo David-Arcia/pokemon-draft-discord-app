@@ -10,6 +10,7 @@ import {
 } from 'discord-interactions';
 import { getRandomEmoji, DiscordRequest } from './utils.js';
 import { getShuffledOptions, getResult } from './game.js';
+import { Player, DraftOrganizer } from './PokeDraft.js';
 
 // Create an express app
 const app = express();
@@ -18,6 +19,7 @@ const PORT = process.env.PORT || 3000;
 
 // Store for in-progress games. In production, you'd want to use a DB
 const activeGames = {};
+let activeDraftOrg = null;
 
 /**
  * Interactions endpoint URL where Discord will send HTTP requests
@@ -101,6 +103,33 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
       });
     }
 
+    if (name === 'start-draft' && id) {
+
+      const teamSize = req.body.data.options.find(
+        opt => opt.name === "team-size"
+      ).value;
+
+      const budget = req.body.data.options.find(
+        opt => opt.name === "budget"
+      ).value;
+
+      activeDraftOrg = new DraftOrganizer({budget: budget, numberOfPokemon: teamSize, players: [''], period: 0});
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+          components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              // Fetches a random emoji to send from a helper function
+              content: `New Draft Created wih budget ${activeDraftOrg.budget} and team size ${activeDraftOrg.numberOfPokemon}`
+            }
+          ]
+        },
+      });
+    }
+
     console.error(`unknown command: ${name}`);
     return res.status(400).json({ error: 'unknown command' });
   }
@@ -174,7 +203,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
           // Send results
           await res.send({
             type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
-            data: { 
+            data: {
               flags: InteractionResponseFlags.IS_COMPONENTS_V2,
               components: [
                 {
@@ -182,7 +211,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
                   content: resultStr
                 }
               ]
-             },
+            },
           });
           // Update ephemeral message
           await DiscordRequest(endpoint, {
@@ -201,7 +230,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         }
       }
     }
-    
+
     return;
   }
 

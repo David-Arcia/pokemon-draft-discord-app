@@ -52,9 +52,9 @@ export class DraftOrganizer {
     this.budget = props.budget;
     this.numberOfPokemon = props.numberOfPokemon;
     this.period = props.period;
-    this.players = constructPlayers(props.players);
+    //this.players = constructPlayers(props.players);
     
-    this.runDraft();
+    //this.runDraft();
   }
 
   static constructPlayers(players){
@@ -102,14 +102,14 @@ export class DraftOrganizer {
 
   static awaitPlayer(){
     //use discord hook to get input from player
-    const pokemon 
+    //const pokemon 
   }
 
   
   static notify(){
 
     //use discord hook to message player its their turn
-    continue;
+    //continue;
 
   }
 
