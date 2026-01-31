@@ -62,7 +62,6 @@ export class DraftOrganizer {
   lockAndRunDraft() {
     this.isRunning = true;
     this.players = this.constructPlayers(this.prospectivePlayers)
-    console.log("run draft");
     //Todo: turn on when more infrastrcture ready
     //this.runDraft();
   }

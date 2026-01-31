@@ -123,7 +123,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
             {
               type: MessageComponentTypes.TEXT_DISPLAY,
               // Fetches a random emoji to send from a helper function
-              content: `New Draft Created wih budget ${activeDraftOrg.budget} and team size ${activeDraftOrg.numberOfPokemon}`
+              content: `New Draft Created with budget ${activeDraftOrg.budget} and team size ${activeDraftOrg.numberOfPokemon}`
             }
           ]
         },
@@ -140,7 +140,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
             {
               type: MessageComponentTypes.TEXT_DISPLAY,
               // Fetches a random emoji to send from a helper function
-              content: `Draft will begin wih budget ${activeDraftOrg.budget} and team size ${activeDraftOrg.numberOfPokemon} and ${activeDraftOrg.prospectivePlayers.length} players.`
+              content: `Draft will begin with budget ${activeDraftOrg.budget} and team size ${activeDraftOrg.numberOfPokemon} and ${activeDraftOrg.prospectivePlayers.length} players.`
             }
           ]
         },
