@@ -113,7 +113,7 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         opt => opt.name === "budget"
       ).value;
 
-      activeDraftOrg = new DraftOrganizer({budget: budget, numberOfPokemon: teamSize, players: [''], period: 0});
+      activeDraftOrg = new DraftOrganizer({ budget: budget, numberOfPokemon: teamSize, players: [''], period: 0 });
 
       return res.send({
         type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
@@ -146,6 +146,64 @@ app.post('/interactions', verifyKeyMiddleware(process.env.PUBLIC_KEY), async fun
         },
       }).then(() => {
         activeDraftOrg.lockRunAndDraft();
+      });
+    }
+
+    if (name === 'add-player' && id) {
+      const player = req.body.data.options.find(
+        opt => opt.name === "player"
+      ).value;
+
+      activeDraftOrg.addPlayer(player)
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+          components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              content: `Added <@${player}> to the draft!`
+            }
+          ]
+        },
+      });
+    }
+
+    if (name === 'remove-player' && id) {
+      const player = req.body.data.options.find(
+        opt => opt.name === "player"
+      ).value;
+
+      activeDraftOrg.removePlayer(player)
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+          components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              content: `Removed <@${player}> from the draft!`
+            }
+          ]
+        },
+      });
+    }
+
+    if (name === 'see-players' && id) {
+
+      return res.send({
+        type: InteractionResponseType.CHANNEL_MESSAGE_WITH_SOURCE,
+        data: {
+          flags: InteractionResponseFlags.IS_COMPONENTS_V2,
+          components: [
+            {
+              type: MessageComponentTypes.TEXT_DISPLAY,
+              content: `Here are the current players!\n${activeDraftOrg.getProspectivePlayersString()}`
+            }
+          ]
+        },
       });
     }
 

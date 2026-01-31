@@ -59,7 +59,7 @@ export class DraftOrganizer {
     this.isRunning = false;
   }
 
-  static lockAndRunDraft() {
+  lockAndRunDraft() {
     this.isRunning = true;
     this.players = this.constructPlayers(this.prospectivePlayers)
     console.log("run draft");
@@ -67,25 +67,27 @@ export class DraftOrganizer {
     //this.runDraft();
   }
 
-  static addPlayer(userName) {
+  addPlayer(userName) {
     if (this.isRunning) {
       return;
     }
-    this.prospectivePlayers.add(userName);
+    this.prospectivePlayers.push(userName);
   }
 
-  static removePlayer(userName) {
+  removePlayer(userName) {
     if (this.isRunning) {
       return;
     }
-    for (let i; i < this.prospectivePlayers.length; i++) {
+    for (let i = 0; i < this.prospectivePlayers.length; i++) {
+      console.log(this.prospectivePlayers[i]);
+      console.log(userName);
       if (this.prospectivePlayers[i] == userName) {
-        this.prospectivePlayers = this.prospectivePlayers.toSpliced(i);
+        this.prospectivePlayers = this.prospectivePlayers.toSpliced(i, 1);
       }
     }
   }
 
-  static constructPlayers(players){
+  constructPlayers(players){
     let playerList = [];
 
     for(player in players) {
@@ -94,7 +96,7 @@ export class DraftOrganizer {
     return playerList;
   }
 
-  static runDraft() {
+  runDraft() {
     let draftStage = 0;
 
     const queue = [...this.players];
@@ -128,13 +130,13 @@ export class DraftOrganizer {
     }
   }
 
-  static awaitPlayer(player){
+  awaitPlayer(player){
     //use discord hook to get input from player
     //const pokemon 
   }
 
   
-  static notify(player){
+  notify(player){
 
     //use discord hook to message player its their turn
     //continue;
@@ -142,8 +144,19 @@ export class DraftOrganizer {
   }
 
   //Announce to the server something
-  static announce(message){
+  announce(message){
 
+  }
+
+  getProspectivePlayersString(){
+    if (this.prospectivePlayers.length == 0) {
+      return "No Players In Draft"
+    }
+    let acc = '';
+    for (let i = 0; i < this.prospectivePlayers.length; i++) {
+      acc+= `<@${this.prospectivePlayers[i]}>\n`;
+    }
+    return acc;
   }
 
 

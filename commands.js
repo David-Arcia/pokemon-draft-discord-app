@@ -76,6 +76,45 @@ const START_DRAFT_COMMAND = {
   type: 1,
 }
 
-const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, INIT_DRAFT_COMMAND, START_DRAFT_COMMAND];
+//Add players to draft
+const ADD_PLAYER_COMMAND = {
+  name: 'add-player',
+  description: 'Add a player to the draft',
+  type: 1,
+  options: [
+
+    {
+      type: 6,
+      name: "player",
+      description: "the player to add",
+      required: true,
+    },
+  ]
+}
+
+//Remove players to draft
+const REMOVE_PLAYER_COMMAND = {
+  name: 'remove-player',
+  description: 'Remove a player from the draft',
+  type: 1,
+  options: [
+
+    {
+      type: 6,
+      name: "player",
+      description: "the player to remove",
+      required: true,
+    },
+  ]
+}
+
+//See player list
+const SEE_PLAYERS_COMMAND = {
+  name: 'see-players',
+  description: 'See all prospective players in the draft',
+  type: 1,
+}
+
+const ALL_COMMANDS = [TEST_COMMAND, CHALLENGE_COMMAND, INIT_DRAFT_COMMAND, START_DRAFT_COMMAND, ADD_PLAYER_COMMAND, REMOVE_PLAYER_COMMAND, SEE_PLAYERS_COMMAND];
 
 InstallGlobalCommands(process.env.APP_ID, ALL_COMMANDS);
